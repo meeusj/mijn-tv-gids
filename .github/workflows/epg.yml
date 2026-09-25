@@ -22,6 +22,7 @@ jobs:
         working-directory: epg
       - run: sed -i 's/<tv date="\([^"]*\)">/<tv date="\1" generator-info-name="Belgische TV-gids">/' guide.xml
       - run: sed -i -e 's/channel="VRT1.be@HD"/channel="VRT1.be"/g' -e 's/channel="VRTCanvas.be@HD"/channel="VRTCanvas.be"/g' -e 's/channel="Ketnet.be@HD"/channel="Ketnet.be"/g' guide.xml
+      - run: sed -i -e 's/id="Play4.be@SD"/id="Play4.be"/g' -e 's/channel="Play4.be@SD"/channel="Play4.be"/g' guide.xml
       - uses: actions/checkout@v4
         with:
           ref: gh-pages
