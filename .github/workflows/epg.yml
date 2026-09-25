@@ -18,7 +18,7 @@ jobs:
           node-version: 18
       - run: npm ci
         working-directory: epg
-      - run: npm run grab --- --site=vrt.be --site=vtm.be --output=../guide.xml --days=7
+      - run: npm run grab --- --sites=vrt.be,vtm.be --output=../guide.xml --days=7
         working-directory: epg
       - uses: actions/checkout@v4
         with:
