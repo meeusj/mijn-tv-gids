@@ -1,0 +1,37 @@
+name: TV-gids bijwerken
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  grab:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: iptv-org/epg
+          path: epg
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm ci
+        working-directory: epg
+      - run: npm run grab --- --site=vrt.be --site=vtm.be --output=../guide.xml --days=7
+        working-directory: epg
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: publish
+        continue-on-error: true
+      - run: |
+          mkdir -p publish
+          mv guide.xml publish/guide.xml
+          cd publish
+          git init -q
+          git checkout -B gh-pages
+          git add guide.xml
+          git -c user.email="actions@github.com" -c user.name="GitHub Actions" commit -q -m "Update" --allow-empty
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          git push -f origin gh-pages
