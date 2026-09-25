@@ -18,8 +18,9 @@ jobs:
           node-version: 18
       - run: npm ci
         working-directory: epg
-      - run: npm run grab --- --sites=vrt.be,vtm.be --output=../guide.xml --days=7
+      - run: npm run grab --- --sites=vrt.be,vtm.be,tvgids.nl --output=../guide.xml --days=7
         working-directory: epg
+      - run: sed -i 's/<tv date="\([^"]*\)">/<tv date="\1" generator-info-name="Belgische TV-gids">/' guide.xml
       - uses: actions/checkout@v4
         with:
           ref: gh-pages
