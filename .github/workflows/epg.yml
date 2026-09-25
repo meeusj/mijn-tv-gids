@@ -26,6 +26,7 @@ jobs:
           path: publish
         continue-on-error: true
       - run: |
+          rm -rf publish/.git
           mkdir -p publish
           mv guide.xml publish/guide.xml
           cd publish
